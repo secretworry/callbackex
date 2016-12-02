@@ -1,24 +1,40 @@
 # Callbackex
 
-**TODO: Add description**
+Define and execute callbacks with ease in Elixir
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
-
-  1. Add `callbackex` to your list of dependencies in `mix.exs`:
+  Add `callbackex` to your list of dependencies in `mix.exs`:
 
     ```elixir
     def deps do
-      [{:callbackex, "~> 0.1.0"}]
+      [{:callbackex, github: "secretworry/callbackex", branch: "master"}]
     end
     ```
 
-  2. Ensure `callbackex` is started before your application:
+## Quick Example
 
-    ```elixir
-    def application do
-      [applications: [:callbackex]]
+  ```elixir
+  defmodule UserProcessor do
+    # Use Callbackex
+    use Callbackex, :before_create, :after_create
+    
+    # Define callbacks
+    callbacks do
+      before_create :check_ip
+      before_create User.ValidateName, limit: 10
+      after_create Indexer, index: :user
+      after_create AuditLog, operation: :create
     end
-    ```
+    
+    # Use callbacks
+    def create(params) do
+      with {:ok, params} <- invoke_callback(:before_create, params),
+           {:ok, user} <- do_create_user(params),
+           {:ok, user} <- invoke_callback(:after_create, user) do
+        {:ok, user}
+      end
+    end
+  end
+  ```
 
