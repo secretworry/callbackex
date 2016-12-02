@@ -7,6 +7,12 @@ Define and execute callbacks with ease in Elixir
   Add `callbackex` to your list of dependencies in `mix.exs`:
 
     ```elixir
+    # use the stable version
+    def deps do
+      [{:callbackex, "~> 0.1"}]
+    end
+    
+    # use the latest version
     def deps do
       [{:callbackex, github: "secretworry/callbackex", branch: "master"}]
     end
