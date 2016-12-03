@@ -55,4 +55,13 @@ defmodule CallbackexTest do
       end
     end
   end
+
+  test "should support using sigil to define callback names" do
+    defmodule SigilSample do
+      use Callbackex, ~w{before_create after_create}a
+    end
+
+    assert SigilSample.__callbackex__(:callbacks)
+        == ~w{before_create after_create}a
+  end
 end

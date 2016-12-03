@@ -46,7 +46,7 @@ defmodule Callbackex do
     module = __CALLER__.module
     Module.register_attribute module, @callbacks, accumulate: false, persist: false
     Module.register_attribute module, @callback_registry, accumulate: false, persist: false
-    Module.put_attribute module, @callbacks, opts
+    Module.put_attribute module, @callbacks, opts |> Macro.expand(__CALLER__)
     Module.put_attribute module, @callback_registry, %{}
     quote do
       @before_compile unquote(__MODULE__)
